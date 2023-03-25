@@ -133,3 +133,8 @@ $$
 > ```
 > Ta có thể điều chỉnh các tham số bằng cách sửa đổi giá trị của chúng.
 > 
+> ## **5. Tài liệu tham khảo**.
+>> ### Genetic algorithm and graph partitioning
+>> (Paper link: https://ieeexplore.ieee.org/abstract/document/508322)
+
+> 
