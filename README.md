@@ -76,7 +76,6 @@ $$
 >     
 >     ![image](./images/tournament_selection.png)
 >     
->     (© https://medium.com/pragmatic-programmers/implementing-common-selection-strategies-37c6f99795a6)
 > -----
 >> ### 2.5 Crossover operator (Toán tử lai ghép) 
 > * **Multi-point crossover**
