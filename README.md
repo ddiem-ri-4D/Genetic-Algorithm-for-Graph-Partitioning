@@ -6,7 +6,7 @@
 
 Cho một đồ thị vô hướng $G = (V, E)$ với $V$ là tập hợp các đỉnh có $n$ phần tử và $E$ là tập hợp các cạnh giữa các đỉnh. Yêu cầu chia đồ thị thành hai tập hợp đỉnh $v1$ và $v2$ sao cho số cạnh nối giữa các đỉnh thuộc hai tập hợp khác nhau là nhỏ nhất và kích thước của hai tập hợp bằng nhau.
 
-> ![image](https://i.ibb.co/sPVJWcF/graph-partitioning.png)
+> ![](https://i.ibb.co/sPVJWcF/graph-partitioning.png)
 
 > ### **1.2 Mục đích của phân hoạch đồ thị**
 >> Phân tích bài toán đồ thị quy mô lớn thành các bài toán con nhỏ hơn có thể giải quyết độc lập và song song.
