@@ -85,7 +85,8 @@ $$
 >   * 5 điểm cắt được chọn ngẫu nhiên để thực hiện lai ghép.
 >   * Hai con cái 1 và 2 sẽ được tạo ra theo cách khác nhau (được mô tả như hình ảnh dưới đây).
 >   * Nếu các phân vùng của con cái mới không có kích thước bằng nhau thì bị loại bỏ.
->     ![image](./images/multi_crossover.PNG)
+
+![image](./images/multi_crossover.PNG)
 
 >
 > * **Single point crossover (Lai ghép 1 điểm )**
@@ -99,13 +100,16 @@ $$
 > *	Thay thế một node trong đồ thị bằng 1 loại khác phù hợp.
 > *	Node được chọn ngẫu nhiên từ phân vùng 0 sẽ được trao đổi với node được chọn ngẫu nhiên từ phân vùng 1.
 
->![image](./images/mutation.png)
+![image](./images/mutation.png)
+
 >
 > -----
 >> ### Generational selection strategy (chiến lược lựa chọn thế hệ)
 > * **Elitism**
 >     * Giữ lại M cá thể tốt nhất từ thế hệ cha mẹ để giữ cho chất lượng tổng thể của quần thể không giảm.
->     ![image](./images/elitism.PNG)
+
+![image](./images/elitism.PNG)
+
 >     
 > ## **3. Thực thi chương trình**.
 > ```
