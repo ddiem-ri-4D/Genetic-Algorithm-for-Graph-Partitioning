@@ -74,7 +74,9 @@ $$
 >     * Chọn ngẫu nhiên $k$ cá thể từ quần thể và chọn cá thể tốt nhất trong số chúng.
 >     * -	Số ngẫu nhiên k có thể điều chỉnh với tham số **K_IND**.
 >     
->     ![image](./images/tournament_selection.png)
+
+![image](./images/tournament_selection.png)
+
 >     
 > -----
 >> ### 2.5 Crossover operator (Toán tử lai ghép) 
