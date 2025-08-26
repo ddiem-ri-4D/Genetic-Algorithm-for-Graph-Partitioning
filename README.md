@@ -1,133 +1,132 @@
 # Genetic Algorithm for Graph Partitioning
 
->> ## **1. Graph partitioning (Phân hoạch đồ thị) là gì?**
+>> ## **1. What is Graph Partitioning?**
 > 
->> ### **1.1 Giới thiệu bài toán**
+>> ### **1.1 Problem Introduction**
 
-Cho một đồ thị vô hướng $G = (V, E)$ với $V$ là tập hợp các đỉnh có $n$ phần tử và $E$ là tập hợp các cạnh giữa các đỉnh. Yêu cầu chia đồ thị thành hai tập hợp đỉnh $v1$ và $v2$ sao cho số cạnh nối giữa các đỉnh thuộc hai tập hợp khác nhau là nhỏ nhất và kích thước của hai tập hợp bằng nhau.
+Given an undirected graph $G = (V, E)$, where $V$ is a set of vertices with $n$ elements and $E$ is a set of edges connecting the vertices. The task is to divide the graph into two vertex sets $v1$ and $v2$ such that the number of edges connecting vertices from different sets is minimized and the sizes of the two sets are equal.
 
 ![](https://i.ibb.co/sPVJWcF/graph-partitioning.png)
 
-> ### **1.2 Mục đích của phân hoạch đồ thị**
->> Phân tích bài toán đồ thị quy mô lớn thành các bài toán con nhỏ hơn có thể giải quyết độc lập và song song.
+> ### **1.2 Purpose of Graph Partitioning**
+>> Analyze a large-scale graph into smaller subproblems that can be solved independently and in parallel.
 
->> Tốc độ xử lý nhanh hơn. 
+>> Faster processing speed. 
 
 >
-> ## **2. Thiết kế decision (quyết định)**
->> ### 2.1 Parameters (tham số)
-> Thiết kế chương trình gồm 5 tham số.
+> ## **2. Design Decisions**
+>> ### 2.1 Parameters
+> The program design includes 5 parameters.
 > 
 > * **POP_SIZE**
->     * Kích thước quần thể ban đầu.
->     * Type : INT
->     * Range : [1, INF)
+>     * Initial population size.
+>     * Type: INT
+>     * Range: [1, INF)
 >     
 > * **NUM_NODES**
->     * Số đỉnh trong đồ thị được tạo ra ngẫu nhiên.
->     * Nó phải là số **chẵn**.
->     * Type : INT
->     * Range : [2, INF)
+>     * Number of vertices in the randomly generated graph.
+>     * It must be an **even number**.
+>     * Type: INT
+>     * Range: [2, INF)
 >
 > * **CONNECT_PROB**
->     * Xác xuất kết nối giữa hai đỉnh bằng cạnh.
->     * Type : FLOAT
->     * Range : [0., 1.)
+>     * Probability of connecting two vertices with an edge.
+>     * Type: FLOAT
+>     * Range: [0., 1.)
 >     
 > * **MUT_PROB**
->     * Xác suất thực hiện đột biến.
->     * Type : FLOAT
->     * Range : [0., 1.)
+>     * Probability of mutation.
+>     * Type: FLOAT
+>     * Range: [0., 1.)
 >     
 > * **STOPPING_COUNT**
->     * Tiêu chí dừng lại
->     * Nếu không có sự cải thiện nào trong STOPPING_COUNT lần, thì chương trình sẽ bị kết thúc.
->     * Type : INT
->     * Range : (1, INF)
+>     * Stopping criterion.
+>     * If no improvement occurs within STOPPING_COUNT iterations, the program stops.
+>     * Type: INT
+>     * Range: (1, INF)
 >
 > * **K_IND**
->     * Số lượng cá thể được lựa chọn cho cạnh tranh.
->     * Type : INT
->     * Range : [1, NUM_NODES)
+>     * Number of individuals selected for tournament selection.
+>     * Type: INT
+>     * Range: [1, NUM_NODES)
 > -----    
->> ### 2.2 Stopping criteria (tiêu chí dừng)
-> * Nếu không có cải tiến trong 10 lần, chương trình sẽ bị kết thúc.
-> * Số lần mà chương trình chấp nhận không có cải tiến có thể điều chỉnh với tham số **STOPPING_COUNT**.
+>> ### 2.2 Stopping Criteria
+> * If no improvement occurs within 10 iterations, the program stops.
+> * The number of iterations without improvement can be adjusted with the **STOPPING_COUNT** parameter.
 > -----
->> ### 2.3 Fitness function (Hàm đánh giá) 
-> * Giá trị fitness của mỗi cá thể sẽ được tính bằng phương trình dưới đây.
+>> ### 2.3 Fitness Function
+> * The fitness value of each individual is calculated using the following equation:
 > 
 
- $$F_i = \frac{(C_w – C_y) + (C_w – C_b)}{3}
-$$
-> * Trong đó:\
-> $C_w$: Kích thước cắt của giải pháp tệ nhất trong quần thể.\
-> $C_b$: Kích thước cắt của giải pháp tốt nhất trong quần thể.\
-> $C_y$: Kích thước cắt của giải pháp $i$, đó là kích thước cắt của cá nhân đang được đánh giá.
-> * Kích thước cắt là số lượng cạnh giữa các phân vùng của đồ thị. Kích thước cắt nhỏ hơn cho thấy một phân vùng tốt hơn.
-> * Hàm fitness được sử dụng hướng dẫn thuật toán tối ưu hóa để tìm kiếm một giải pháp tốt hơn. Các cá thể có giá trị fitness cao hơn có khả năng được lựa chọn để tiếp tục lai tạo và đột biến, trong khi các cá thể có giá trị fitness thấp hơn có khả năng bị loại bỏ hơn. Mục tiêu cuối cùng là tìm ra cá thể có giá trị fitness tốt nhất, đại diện cho phân vùng tốt nhất của đồ thị theo tiêu chí đã cho.
+ $$F_i = \frac{(C_w – C_y) + (C_w – C_b)}{3}$$
+> * Where:\
+> $C_w$: Cut size of the worst solution in the population.\
+> $C_b$: Cut size of the best solution in the population.\
+> $C_y$: Cut size of solution $i$, i.e., the individual being evaluated.
+> * Cut size is the number of edges between partitions. Smaller cut size indicates a better partition.
+> * The fitness function guides the optimization algorithm to find better solutions. Individuals with higher fitness values are more likely to be selected for crossover and mutation, while those with lower fitness values are more likely to be eliminated. The ultimate goal is to find the individual with the best fitness value, representing the best graph partition according to the given criteria.
 
 > 
 > -----
->> ### 2.4 Selection operator (toán tử chọn lọc)
-> * **Tournament selection (chọn lọc cạnh tranh)**
->     * Chọn ngẫu nhiên $k$ cá thể từ quần thể và chọn cá thể tốt nhất trong số chúng.
->     * -	Số ngẫu nhiên k có thể điều chỉnh với tham số **K_IND**.
+>> ### 2.4 Selection Operator
+> * **Tournament Selection**
+>     * Randomly select $k$ individuals from the population and choose the best among them.
+>     * The random number $k$ can be adjusted with the **K_IND** parameter.
 >     
 
 ![image](./images/tournament_selection.png)
 
 >     
 > -----
->> ### 2.5 Crossover operator (Toán tử lai ghép) 
-> * **Multi-point crossover**
->   * Từ chọn lọc cạnh tranh, hai nhiễm sắc thể được chọn làm cha mẹ.
->   * 5 điểm cắt được chọn ngẫu nhiên để thực hiện lai ghép.
->   * Hai con cái 1 và 2 sẽ được tạo ra theo cách khác nhau (được mô tả như hình ảnh dưới đây).
->   * Nếu các phân vùng của con cái mới không có kích thước bằng nhau thì bị loại bỏ.
+>> ### 2.5 Crossover Operator
+> * **Multi-point Crossover**
+>   * From tournament selection, two chromosomes are selected as parents.
+>   * 5 cut points are randomly chosen for crossover.
+>   * Two offspring are created differently (as shown in the figure below).
+>   * If the partitions of the new offspring are not equal in size, the offspring are discarded.
 
 ![image](./images/multi_crossover.PNG)
 
 >
-> * **Single point crossover (Lai ghép 1 điểm )**
->   * Từ việc lựa chọn cạnh tranh, hai nhiễm sắc thể được chọn làm cha mẹ.
->   * Điểm lai ghép được chọn ngẫu nhiên.
->   * Nếu các phân vùng của cá thể con mới không có cùng kích thước, cá thể con đó sẽ bị loại bỏ.
+> * **Single-point Crossover**
+>   * From tournament selection, two chromosomes are selected as parents.
+>   * A random crossover point is chosen.
+>   * If the partitions of the new offspring are not equal in size, the offspring are discarded.
 
 >
 > -----
->> ### 2.6 Mutation operator (Toán tử đột biến)
-> *	Thay thế một node trong đồ thị bằng 1 loại khác phù hợp.
-> *	Node được chọn ngẫu nhiên từ phân vùng 0 sẽ được trao đổi với node được chọn ngẫu nhiên từ phân vùng 1.
+>> ### 2.6 Mutation Operator
+> * Replace a node in the graph with another suitable node.
+> * A node randomly selected from partition 0 is swapped with a node randomly selected from partition 1.
 
 ![image](./images/mutation.png)
 
 >
 > -----
->> ### Generational selection strategy (chiến lược lựa chọn thế hệ)
+>> ### Generational Selection Strategy
 > * **Elitism**
->     * Giữ lại M cá thể tốt nhất từ thế hệ cha mẹ để giữ cho chất lượng tổng thể của quần thể không giảm.
+>     * Keep the top M individuals from the parent generation to maintain overall population quality.
 
 ![image](./images/elitism.PNG)
 
 >     
-> ## **3. Thực thi chương trình**.
+> ## **3. Program Execution**
 > ```
 > cd src
 > python3 main.py
 > ```
->> ### Yêu cầu
+>> ### Requirements
 > ```
 > networkx
 > numpy
 > ```
 >> **Installation**
 >> ```
->> pip3 install networkx
->> pip3 install numpy
->> ```
-> ## **4. Điều chỉnh tham số học**.
-> Định nghĩa các tham số là biến toàn cục trong tệp main.py .
+> pip3 install networkx
+> pip3 install numpy
+> ```
+> ## **4. Adjusting Learning Parameters**
+> Define parameters as global variables in `main.py`:
 > ```
 > POP_SIZE = 300 
 > NUM_NODES = 100
@@ -136,10 +135,8 @@ $$
 > STOPPING_COUNT = 10
 > K_IND = int(POP_SIZE * 0.1)
 > ```
-> Ta có thể điều chỉnh các tham số bằng cách sửa đổi giá trị của chúng.
+> You can adjust the parameters by modifying their values.
 > 
-> ## **5. Tài liệu tham khảo**.
->> ### Genetic algorithm and graph partitioning
+> ## **5. References**
+>> ### Genetic Algorithm and Graph Partitioning
 >> (Paper link: https://ieeexplore.ieee.org/abstract/document/508322)
-
-> 
