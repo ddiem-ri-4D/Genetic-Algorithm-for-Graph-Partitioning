@@ -121,7 +121,7 @@ Given an undirected graph $G = (V, E)$, where $V$ is a set of vertices with $n$ 
 > numpy
 > ```
 >> **Installation**
->> ```
+> ```
 > pip3 install networkx
 > pip3 install numpy
 > ```
